@@ -1,0 +1,50 @@
+version: '3.3'
+
+services:
+  ontu_backend:
+    build:
+      context: ./backend
+    #restart: always
+    container_name: ontu_backend
+    volumes:
+      - ./backend:/backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - ontu_db
+    networks:
+      - ontu_network
+    env_file:
+      - backend/.env_config
+
+  ontu_web:
+    build:
+      context: ./web
+    #restart: always
+    container_name: ontu_web
+    volumes:
+      - ./web:/web
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ontu_backend
+    networks:
+      - ontu_network
+
+  ontu_db:
+    image: postgres
+    #restart: always
+    container_name: ontu_db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./database:/database
+    ports:
+      - "5445:5432"
+    networks:
+      - ontu_network
+
+networks:
+  ontu_network:
