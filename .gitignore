@@ -1,7 +1,8 @@
 .env
-.django_env
+backend/.django_env
 backend/.env_config
 web/.env
+__pycache__
 
 .DS_Store
 node_modules
